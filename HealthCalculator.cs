@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor;
+using UnityEditor; //for the editor quit application logic
 
 public class HealthCalculator : MonoBehaviour
 {
@@ -59,29 +59,32 @@ public class HealthCalculator : MonoBehaviour
 
  //Data["key1"]["key2"]
 
-    int Calculator(bool Averaged,bool Stout, bool Tough, string Class, string Race, int Level)
+    int Calculator(bool Averaged,bool Stout, bool Tough, string Class, string Race, int Level) //calculator function
     {
+        //intializing values for calculation
         int stoutnum = 0;
         int toughnum = 0;
         int hp;
 
         if(Tough) //if true
         {
-            toughnum = 2;
+            toughnum = 2; //add to calculations
         }
         if(Stout) //if true
         {
-            stoutnum = 1;
+            stoutnum = 1; //add to calculations
         }
 
         if (Averaged)
         {
-            return hp = (Data["Classes"][Class]/2 + 1) + (Data["Races"][Race]*Level) + Level + (toughnum*Level)+ (stoutnum*Level); //averaged and all other stuff is added
+            return hp = (Data["Classes"][Class]/2 + 1) + (Data["Races"][Race]*Level) + Level + (toughnum*Level)+ (stoutnum*Level); 
+            //averaged and all other stuff is added, uses +1 instead of 0.5 because DND rounds up anyways
         }
 
         else //rolled
         {
-            return hp = Random.Range(1,Data["Classes"][Class]) + (Data["Races"][Race]*Level) + Level + (toughnum*Level)+ (stoutnum*Level); //randomized and added
+            return hp = Random.Range(1,Data["Classes"][Class]) + (Data["Races"][Race]*Level) + Level + (toughnum*Level)+ (stoutnum*Level); 
+            //randomized and added
         }
     }
 
@@ -89,19 +92,19 @@ public class HealthCalculator : MonoBehaviour
  
     void Start()
     {
-        if(!Data["Races"].ContainsKey(race)||!Data["Classes"].ContainsKey(Class))
+        if(!Data["Races"].ContainsKey(race)||!Data["Classes"].ContainsKey(Class)) // if the chosen class or race doesnt work, or is not all caps
         {
             Debug.Log("Please use a valid Class or Race, and use ALL CAPS");
             UnityEditor.EditorApplication.isPlaying = false;
             return;
         }
-        if(averaged && rolled )
+        if(averaged && rolled ) //if they select both health options
         {
             Debug.Log("Please pick averaged OR rolled.");
             UnityEditor.EditorApplication.isPlaying = false;
             return;
         }
-        if(level > 20)
+        if(level > 20) //max dnd level is 20 (I think?)
         {
            Debug.Log("Max level is 20!");
             UnityEditor.EditorApplication.isPlaying = false; 
@@ -110,24 +113,24 @@ public class HealthCalculator : MonoBehaviour
 
         int hitpoints = Calculator(averaged,stout,tough,Class,race,level);
 
-        //Stout or Tough logic, could be function
+        //Stout or Tough logic, couldve been a function
         string Has = "does not have";
         string Stough = "stout or tough";
         if(stout || tough)
         {       
-            Has = "has";
-            if(stout && tough)
+            Has = "has"; //if either 
+            if(stout && tough) //if both
             {
                 Has = "has both";
                 Stough = "Stout and Tough";
             }
 
-            else if(stout)
+            else if(stout) //if not both
             {
                 Stough = "stout";
             }
             
-            else
+            else //if not stout
             {
                 Stough = "tough";
             }
